@@ -37,7 +37,8 @@ public class InterfazGrafica {
 	private JFrame mainFrame;
 	private Juego tablero;
 	private JuegoConImg juegoConImg;
-
+	private JButton botonVolver;
+	private JButton botonAyuda;
 	private JButton[][] botones;
 	private JLabel cantMov;
 
@@ -53,6 +54,10 @@ public class InterfazGrafica {
 	}
 
 	public InterfazGrafica() {
+		iniciarJuego();
+	}
+
+	private void iniciarJuego() {
 		crearMainFrame();
 		this.tablero = new Juego();
 		initialize();
@@ -184,6 +189,30 @@ public class InterfazGrafica {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		this.botones = new JButton[Juego.FIL][Juego.COL];
+		
+		
+		botonVolver = new JButton("Volver");
+		botonVolver.addActionListener(new ActionListener() {
+			
+            public void actionPerformed(ActionEvent e){
+            	volverJuego();
+            	
+            }
+		});
+		frame.getContentPane().add(botonVolver, BorderLayout.NORTH);
+		botonAyuda = new JButton("Ayuda");
+        botonAyuda.addActionListener(new ActionListener() {
+			
+            public void actionPerformed(ActionEvent e){
+            	tablero.getAyuda();
+            	actualizarBotones();            	
+            }
+		});
+		
+		frame.getContentPane().add(botonAyuda, BorderLayout.EAST);
+		
+		
+		
 		JPanel panel = new JPanel(new GridLayout(Juego.FIL, Juego.COL));
 
 		for (int i = 0; i < Juego.FIL; i++) {
@@ -201,7 +230,7 @@ public class InterfazGrafica {
 		
 
 		cantMov = new JLabel("Movimientos: 0");
-		frame.getContentPane().add(cantMov, BorderLayout.NORTH);
+		frame.getContentPane().add(cantMov, BorderLayout.SOUTH);
 		frame.getContentPane().add(panel);
 
 		actualizarBotones();
@@ -368,10 +397,32 @@ public class InterfazGrafica {
 
 		if (n == JOptionPane.YES_OPTION) {
 			// vuelve al menu principal
+			iniciarJuego();
+		
 			frame.setVisible(false);
 			mainFrame.setVisible(true);
 		} else {
 			frame.dispose();
+		}
+	}
+	
+	private void volverJuego() {
+		int n = JOptionPane.showOptionDialog(frame, "Desea volver al Menu?", "Volver", JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE, null, new Object[] { "Sí", "No" }, "Sí");
+
+		if (n == JOptionPane.YES_OPTION) {
+			// vuelve al menu principal
+			iniciarJuego();
+			
+		
+			frame.setVisible(false);
+			mainFrame.setVisible(true);
+			
+		} else {
+			
+			JOptionPane.setRootFrame(frame);
+			frame.requestFocusInWindow();
+			frame.setFocusable(true);
 		}
 	}
 
