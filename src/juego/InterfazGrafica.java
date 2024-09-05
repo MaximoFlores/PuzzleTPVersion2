@@ -195,21 +195,6 @@ public class InterfazGrafica {
 				botones[i][j].setOpaque(true);
 //			    botones[i][j].setEnabled(false);
 				botones[i][j].setFocusable(false);
-				final int x = i;
-                final int y = j;
-                botones[i][j].addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e){
-                    	switch (nextVerification(x,y)){
-                        case "UP" -> moverFicha("UP");
-                        case "DOWN" -> moverFicha("DOWN");
-                        case "LEFT" -> moverFicha("LEFT");
-                        case "RIGHT" -> moverFicha("RIGHT");
-                    }
-                        
-                    }
-
-					
-                });
 				panel.add(botones[i][j]);
 			}
 		}
@@ -241,11 +226,55 @@ public class InterfazGrafica {
 			
 			}
 		});
-
+		bottonsAction();
 		frame.setFocusable(true);
 	}
 	
+	private void bottonsAction() {
+		for (int i = 0; i < Juego.FIL; i++) {
+			for (int j = 0; j < Juego.COL; j++) {
+				final int x = i;
+				final int y = j;
+		botones[i][j].addActionListener(new ActionListener() {
+			@Override
+            public void actionPerformed(ActionEvent e){
+            	switch (nextVerification(x,y)){
+                case "UP" -> moverFicha("UP");
+                case "DOWN" -> moverFicha("DOWN");
+                case "LEFT" -> moverFicha("LEFT");
+                case "RIGHT" -> moverFicha("RIGHT");
+            }
+            }
+
+			
+        });
+			}
+		}
+	}
+	
 	private String nextVerification(int i, int j) {
+		if(juegoConImg != null) {
+			if(i<3){
+	             int valor1 = juegoConImg.getValor(i+1, j);
+	             if (valor1 == 0){
+	                 return "DOWN";
+	         }    }
+	         if(i>0){
+	             int valor2 = juegoConImg.getValor(i-1, j);
+	             if (valor2 == 0){
+	                 return "UP";
+	         }    }
+	         if(j<3){
+	             int valor3 = juegoConImg.getValor(i, j+1);
+	             if (valor3 == 0){
+	                 return "RIGHT";
+	         }    }
+	         if(j>0){
+	             int valor4 = juegoConImg.getValor(i, j-1);
+	             if (valor4 == 0){
+	                 return "LEFT";
+	         }    }
+		}else {
 		 if(i<3){
              int valor1 = tablero.getValor(i+1, j);
              if (valor1 == 0){
@@ -266,6 +295,7 @@ public class InterfazGrafica {
              if (valor4 == 0){
                  return "LEFT";
          }    }
+		}
 
      return "";
 	}
