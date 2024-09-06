@@ -23,6 +23,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import java.awt.Cursor;
+import javax.swing.border.MatteBorder;
 
 public class InterfazGrafica {
 
@@ -70,67 +72,101 @@ public class InterfazGrafica {
 		botonParaJugarConImagenes(panel);
 
 		mainFrame.getContentPane().add(panel);
+		
+		BotonSalir(panel);
+			
+		
+	}
+	
+	private void BotonSalir(JPanel panel) {
+		JButton btnSalir = new JButton("Salir");
+		btnSalir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnSalir.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnSalir.setBorder(new MatteBorder(4,4,2,2,new Color(90,130,180)));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnSalir.setBorder(new MatteBorder(3,3,3,3,new Color(90,130,180)));
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.exit(0);
+			}
+		});
+		btnSalir.setForeground(new Color(90, 130, 180));
+		btnSalir.setFont(new Font("Dialog", Font.BOLD, 20));
+		btnSalir.setFocusable(false);
+		btnSalir.setContentAreaFilled(false);
+		btnSalir.setBorder(new MatteBorder(3, 3, 3, 3, (Color) new Color(90, 130, 180)));
+		btnSalir.setBackground(Color.WHITE);
+		btnSalir.setBounds(195, 450, 200, 35);
+		panel.add(btnSalir);
+		
 	}
 
 	private void tituloNombreDelJuego(JPanel panel) {
-		JLabel nombreJuego = new JLabel("ROMPECABEZAS DESLIZANTE", JLabel.CENTER);
-		nombreJuego.setBounds(90, 30, 400, 300);
-		nombreJuego.setFont(new Font("Impact", Font.BOLD, 30));
-		nombreJuego.setForeground(Color.black);
-		nombreJuego.setOpaque(true);  // Necesario para que el fondo se vea
-		nombreJuego.setBackground(Color.white);
-		panel.add(nombreJuego);
+		JLabel lblNombreJuego = new JLabel("ROMPECABEZAS DESLIZANTE", JLabel.CENTER);
+		lblNombreJuego.setBounds(90, 30, 400, 300);
+		lblNombreJuego.setFont(new Font("Impact", Font.BOLD, 30));
+		lblNombreJuego.setForeground(Color.black);
+		lblNombreJuego.setOpaque(true);  // Necesario para que el fondo se vea
+		lblNombreJuego.setBackground(Color.white);
+		panel.add(lblNombreJuego);
 	}
 
 	private void botonParaJugarConNumeros(JPanel panel) {
-		JButton playNros = new JButton("Números");
-		playNros.setBounds(195, 350, 200, 30);
-		playNros.setFont(new Font("Clear Sans", Font.BOLD, 20));
-		playNros.setForeground(Color.BLACK);
-		playNros.setBackground(new Color(187, 173, 160));
-		playNros.setBorder(BorderFactory.createEmptyBorder());
-		playNros.setFocusable(false);
-		playNros.setContentAreaFilled(false);
-		playNros.addMouseListener(new MouseAdapter() {
+		JButton btnPlayNros = new JButton("Números");
+		btnPlayNros.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnPlayNros.setBounds(195, 350, 200, 35);
+		btnPlayNros.setFont(new Font("Clear Sans", Font.BOLD, 20));
+		btnPlayNros.setForeground(new Color(90, 130, 180));
+		btnPlayNros.setBackground(new Color(187, 173, 160));
+		btnPlayNros.setBorder(new MatteBorder(3, 3, 3, 3, (Color) new Color(90, 130, 180)));
+		btnPlayNros.setFocusable(false);
+		btnPlayNros.setContentAreaFilled(false);
+		btnPlayNros.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				playNros.setForeground(Color.red);
+				btnPlayNros.setBorder(new MatteBorder(4,4,2,2,new Color(90,130,180)));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				playNros.setForeground(Color.BLACK);
+				btnPlayNros.setBorder(new MatteBorder(3,3,3,3,new Color(90,130,180)));
 			}
 		});
-		playNros.addActionListener(e -> {
+		btnPlayNros.addActionListener(e -> {
 			mainFrame.setVisible(false);
 			frame.setVisible(true);
 		});
-		panel.add(playNros);
+		panel.add(btnPlayNros);
 	}
 
 	private void botonParaJugarConImagenes(JPanel panel) {
-		JButton playImg = new JButton("Imágenes");
-		playImg.setBounds(235, 380, 120, 30);
-		playImg.setFont(new Font("Clear Sans", Font.BOLD, 20));
-		playImg.setForeground(Color.BLACK);
-		playImg.setBackground(new Color(187, 173, 160));
-		playImg.setBorder(BorderFactory.createEmptyBorder());
-		playImg.setFocusable(false);
-		playImg.setContentAreaFilled(false);
-		playImg.addMouseListener(new MouseAdapter() {
+		JButton btnPlayImg = new JButton("Imágenes");
+		btnPlayImg.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnPlayImg.setBounds(195, 400, 200, 35);
+		btnPlayImg.setFont(new Font("Clear Sans", Font.BOLD, 20));
+		btnPlayImg.setForeground(new Color(90, 130, 180));
+		btnPlayImg.setBackground(new Color(255, 255, 255));
+		btnPlayImg.setBorder(new MatteBorder(3, 3, 3, 3, (Color) new Color(90, 130, 180)));
+		btnPlayImg.setFocusable(false);
+		btnPlayImg.setContentAreaFilled(false);
+		btnPlayImg.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				playImg.setForeground(Color.red);
+				btnPlayImg.setBorder(new MatteBorder(4,4,2,2,new Color(90,130,180)));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				playImg.setForeground(Color.BLACK);
+				btnPlayImg.setBorder(new MatteBorder(3,3,3,3,new Color(90,130,180)));
 			}
 		});
-		playImg.addActionListener(e -> crearSeleccionImagenesFrame());
-		panel.add(playImg);
+		btnPlayImg.addActionListener(e -> crearSeleccionImagenesFrame());
+		panel.add(btnPlayImg);
 	}
 
 	private void crearSeleccionImagenesFrame() {
@@ -144,7 +180,7 @@ public class InterfazGrafica {
 
 		pantallaSeleccionImagenes(seleccionImagenesFrame, rutasImagenes, panel);
 
-		seleccionImagenesFrame.add(panel);
+		seleccionImagenesFrame.getContentPane().add(panel);
 		seleccionImagenesFrame.setVisible(true);
 	}
 
