@@ -204,8 +204,16 @@ public class InterfazGrafica {
         botonAyuda.addActionListener(new ActionListener() {
 			
             public void actionPerformed(ActionEvent e){
-            	tablero.getAyuda();
-            	actualizarBotones();            	
+            	  if (juegoConImg != null) {
+                      juegoConImg.getAyuda();
+                      actualizarBotonesConImagen();
+                      consultaHasGanado();
+                  } else {
+                          tablero.getAyuda();
+                          actualizarBotones();
+                          consultaHasGanado();
+                      }
+                  
             }
 		});
 		
@@ -353,6 +361,10 @@ public class InterfazGrafica {
 			actualizarBotones();
 		}
 
+		consultaHasGanado();
+	}
+
+	private void consultaHasGanado() {
 		if ((tablero != null && tablero.partidaGanada()) || (juegoConImg != null && juegoConImg.partidaGanada())) {
 			mostrarMensajeFinPartida(true);
 			reiniciarJuego();

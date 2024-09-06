@@ -1,7 +1,5 @@
 package juego;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -14,7 +12,7 @@ public class Juego {
 	private int filaVacia;
 	private int colVacia;
 	private int movimientos;
-	private static ArrayList<Integer> orden;
+	private ArrayList<Integer> orden;
 
 	public Juego() {
 		tablero = new int[FIL][COL];
@@ -51,8 +49,9 @@ public class Juego {
 		movimientos = 0;
 	}
 
+
 	public void mezclar() {
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 200; i++) {
 			Random random = new Random();
 
 			int numAzar = random.nextInt(4) + 1;
@@ -106,9 +105,9 @@ public class Juego {
 			movimientos++;
 		
 		if(orden.size()!=0) {
-			if(orden.get(orden.size()-1)!=2){
+			//if(orden.get(orden.size()-1)!=2){
 				orden.add(1);
-			}
+			//}
 		}else {
 		orden.add(1);
 		}
@@ -123,9 +122,9 @@ public class Juego {
 			movimientos++;
 		
 		if(orden.size()!=0) {
-			if(orden.get(orden.size()-1)!=1){
+			//if(orden.get(orden.size()-1)!=1){
 				orden.add(2);
-			}
+			//}
 			}
 		else {
 			orden.add(2);
@@ -142,9 +141,9 @@ public class Juego {
 			movimientos++;
 		
 		if(orden.size()!=0) {
-			if(orden.get(orden.size()-1)!=3){
+			//if(orden.get(orden.size()-1)!=3){
 				orden.add(4);
-			}
+			//}
 		}else {
 			orden.add(4);
 		}
@@ -161,15 +160,54 @@ public class Juego {
 			movimientos++;
 		
 		if(orden.size()!=0) {
-			if(orden.get(orden.size()-1)!=4){
+			//if(orden.get(orden.size()-1)!=4){
 				orden.add(3);
-			}	
+			//}	
 		}
 		else {
 			orden.add(3);
 		}
 		}
 		
+	}	
+	public void regresarArriba() {
+		if (filaVacia < FIL - 1) {
+			tablero[filaVacia][colVacia] = tablero[filaVacia + 1][colVacia];
+			tablero[filaVacia + 1][colVacia] = 0;
+			filaVacia++;
+			movimientos++;
+			System.out.println("Arriba");
+		}
+	}
+
+	public void regresarAbajo() {
+		if (filaVacia > 0) {
+			tablero[filaVacia][colVacia] = tablero[filaVacia - 1][colVacia];
+			tablero[filaVacia - 1][colVacia] = 0;
+			filaVacia--;
+			movimientos++;
+			System.out.println("Abajo");
+		}
+	}
+
+	public void regresarDerecha() {
+		if (colVacia > 0) {
+			tablero[filaVacia][colVacia] = tablero[filaVacia][colVacia - 1];
+			tablero[filaVacia][colVacia - 1] = 0;
+			colVacia--;
+			movimientos++;
+			System.out.println("Derecha");
+		}
+	}
+
+	public void regresarIzquierda() {
+		if (colVacia < COL - 1) {
+			tablero[filaVacia][colVacia] = tablero[filaVacia][colVacia + 1];
+			tablero[filaVacia][colVacia + 1] = 0;
+			colVacia++;
+			movimientos++;
+			System.out.println("izquierda");
+		}
 	}
 
 	private int tableroTamanio() {
@@ -183,14 +221,13 @@ public class Juego {
 	public void getAyuda() {
 		if(orden.size()>=1) {
 		switch (orden.get(orden.size()-1)) {
-		case 1 -> moverAbajo(); 
-		case 2 -> moverArriba();
-		case 3 -> moverDerecha();
-		case 4 -> moverIzquierda() ;
+		case 1 -> regresarAbajo(); 
+		case 2 -> regresarArriba();
+		case 3 -> regresarDerecha();
+		case 4 -> regresarIzquierda() ;
 		}
 		System.out.println(orden);
 		System.out.println(orden.get(orden.size()-1));
-		orden.remove(orden.size()-1);
 		orden.remove(orden.size()-1);
 		
 
