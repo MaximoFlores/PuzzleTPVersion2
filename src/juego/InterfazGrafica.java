@@ -166,6 +166,7 @@ public class InterfazGrafica {
 			}
 		});
 		btnPlayImg.addActionListener(e -> crearSeleccionImagenesFrame());
+		btnPlayImg.addActionListener(e -> mainFrame.dispose());
 		panel.add(btnPlayImg);
 	}
 
@@ -461,8 +462,8 @@ public class InterfazGrafica {
 			// vuelve al menu principal y reestablece la clase juego
 			if(juegoConImg != null) {
 				juegoConImg = null;
+				frame.dispose();
 				iniciarJuego();
-				
 				frame.setVisible(false);
 				mainFrame.setVisible(true);
 				
@@ -487,14 +488,15 @@ public class InterfazGrafica {
 			if(juegoConImg != null) {
 				juegoConImg = null;
 				iniciarJuego();
-				
 				frame.setVisible(false);
 				mainFrame.setVisible(true);
 				
 			}else {
-				
-				iniciarJuego();
-			
+				tablero = new Juego();
+				bottonsAction();
+				darAccionALasFlechasDelTeclado();
+				actualizarBotones();
+				frame.setFocusable(true);
 				frame.setVisible(false);
 				mainFrame.setVisible(true);
 			}
