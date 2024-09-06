@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -13,23 +12,17 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
 
 public class InterfazGrafica {
 
@@ -37,8 +30,6 @@ public class InterfazGrafica {
 	private JFrame mainFrame;
 	private Juego tablero;
 	private JuegoConImg juegoConImg;
-	private JButton botonVolver;
-	private JButton botonAyuda;
 	private JButton[][] botones;
 	private JLabel cantMov;
 
@@ -72,16 +63,26 @@ public class InterfazGrafica {
 		panel.setBackground(Color.white);
 
 		// Botón con el nombre del juego
-		JButton nombreJuego = new JButton("ROMPECABEZAS DESLIZANTE");
+		tituloNombreDelJuego(panel);
+
+		botonParaJugarConNumeros(panel);
+
+		botonParaJugarConImagenes(panel);
+
+		mainFrame.getContentPane().add(panel);
+	}
+
+	private void tituloNombreDelJuego(JPanel panel) {
+		JLabel nombreJuego = new JLabel("ROMPECABEZAS DESLIZANTE", JLabel.CENTER);
 		nombreJuego.setBounds(90, 30, 400, 300);
 		nombreJuego.setFont(new Font("Impact", Font.BOLD, 30));
 		nombreJuego.setForeground(Color.black);
+		nombreJuego.setOpaque(true);  // Necesario para que el fondo se vea
 		nombreJuego.setBackground(Color.white);
-		nombreJuego.setBorder(BorderFactory.createEmptyBorder());
-		nombreJuego.setFocusable(false);
 		panel.add(nombreJuego);
+	}
 
-		// Botón para jugar con números
+	private void botonParaJugarConNumeros(JPanel panel) {
 		JButton playNros = new JButton("Números");
 		playNros.setBounds(195, 350, 200, 30);
 		playNros.setFont(new Font("Clear Sans", Font.BOLD, 20));
@@ -106,8 +107,9 @@ public class InterfazGrafica {
 			frame.setVisible(true);
 		});
 		panel.add(playNros);
+	}
 
-		// Botón para jugar con imágenes
+	private void botonParaJugarConImagenes(JPanel panel) {
 		JButton playImg = new JButton("Imágenes");
 		playImg.setBounds(235, 380, 120, 30);
 		playImg.setFont(new Font("Clear Sans", Font.BOLD, 20));
@@ -129,8 +131,6 @@ public class InterfazGrafica {
 		});
 		playImg.addActionListener(e -> crearSeleccionImagenesFrame());
 		panel.add(playImg);
-
-		mainFrame.getContentPane().add(panel);
 	}
 
 	private void crearSeleccionImagenesFrame() {
@@ -142,6 +142,13 @@ public class InterfazGrafica {
 		String[] rutasImagenes = { "/imagenes/1.jpg", "/imagenes/2.jpg", "/imagenes/3.jpg" };
 		JPanel panel = new JPanel(new GridLayout(1, 3));
 
+		pantallaSeleccionImagenes(seleccionImagenesFrame, rutasImagenes, panel);
+
+		seleccionImagenesFrame.add(panel);
+		seleccionImagenesFrame.setVisible(true);
+	}
+
+	private void pantallaSeleccionImagenes(JFrame seleccionImagenesFrame, String[] rutasImagenes, JPanel panel) {
 		for (String ruta : rutasImagenes) {
 			try {
 				InputStream imgStream = getClass().getResourceAsStream(ruta);
@@ -167,9 +174,6 @@ public class InterfazGrafica {
 				e.printStackTrace();
 			}
 		}
-
-		seleccionImagenesFrame.add(panel);
-		seleccionImagenesFrame.setVisible(true);
 	}
 
 	private void iniciarJuegoConImagen(String rutaImagen) {
@@ -187,20 +191,82 @@ public class InterfazGrafica {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 600, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		JButton botonVolver = botonVolverAlMenu();
+		frame.getContentPane().add(botonVolver, BorderLayout.NORTH);
+		
+		JButton botonAyuda = botonDeAyuda();
+		frame.getContentPane().add(botonAyuda, BorderLayout.EAST);
+		
+		JPanel panel = new JPanel(new GridLayout(Juego.FIL, Juego.COL));
 
+		crearBotonesEnPanel(panel);
+		
+		agregarLabelCantidadDeMovimientosAlFrame(panel);
+
+		actualizarBotones();
+
+		darAccionALasFlechasDelTeclado();
+		
+		bottonsAction();
+		
+		frame.setFocusable(true);
+	}
+
+	private void darAccionALasFlechasDelTeclado() {
+		frame.requestFocusInWindow();
+		frame.addKeyListener(new KeyAdapter() {
+					
+			@Override
+			public void keyPressed(KeyEvent e) {
+				switch (e.getKeyCode()) {
+				case KeyEvent.VK_UP -> moverFicha("UP");
+				case KeyEvent.VK_DOWN -> moverFicha("DOWN");
+				case KeyEvent.VK_LEFT -> moverFicha("LEFT");
+				case KeyEvent.VK_RIGHT -> moverFicha("RIGHT");
+				
+
+				}
+			
+			}
+		});
+	}
+
+	private void agregarLabelCantidadDeMovimientosAlFrame(JPanel panel) {
+		cantMov = new JLabel("Movimientos: 0");
+		frame.getContentPane().add(cantMov, BorderLayout.SOUTH);
+		frame.getContentPane().add(panel);
+	}
+
+	private void crearBotonesEnPanel(JPanel panel) {
 		this.botones = new JButton[Juego.FIL][Juego.COL];
-		
-		
-		botonVolver = new JButton("Volver");
+		for (int i = 0; i < Juego.FIL; i++) {
+			for (int j = 0; j < Juego.COL; j++) {
+				botones[i][j] = new JButton();
+				botones[i][j].setFont(new Font("Clear Sans", Font.ITALIC, 50));
+				
+				botones[i][j].setForeground(Color.black);
+				botones[i][j].setOpaque(true);
+				botones[i][j].setFocusable(false);
+				panel.add(botones[i][j]);
+			}
+		}
+	}
+
+	private JButton botonVolverAlMenu() {
+		JButton botonVolver = new JButton("Volver Al Menu");
 		botonVolver.addActionListener(new ActionListener() {
 			
             public void actionPerformed(ActionEvent e){
-            	volverJuego();
+            	volverAlMenu();
             	
             }
 		});
-		frame.getContentPane().add(botonVolver, BorderLayout.NORTH);
-		botonAyuda = new JButton("Ayuda");
+		return botonVolver;
+	}
+
+	private JButton botonDeAyuda() {
+		JButton botonAyuda = new JButton("Ayuda");
         botonAyuda.addActionListener(new ActionListener() {
 			
             public void actionPerformed(ActionEvent e){
@@ -216,55 +282,7 @@ public class InterfazGrafica {
                   
             }
 		});
-		
-		frame.getContentPane().add(botonAyuda, BorderLayout.EAST);
-		
-		
-		
-		JPanel panel = new JPanel(new GridLayout(Juego.FIL, Juego.COL));
-
-		for (int i = 0; i < Juego.FIL; i++) {
-			for (int j = 0; j < Juego.COL; j++) {
-				botones[i][j] = new JButton();
-				botones[i][j].setFont(new Font("Clear Sans", Font.ITALIC, 50));
-				
-				botones[i][j].setForeground(Color.black);
-				botones[i][j].setOpaque(true);
-//			    botones[i][j].setEnabled(false);
-				botones[i][j].setFocusable(false);
-				panel.add(botones[i][j]);
-			}
-		}
-		
-
-		cantMov = new JLabel("Movimientos: 0");
-		frame.getContentPane().add(cantMov, BorderLayout.SOUTH);
-		frame.getContentPane().add(panel);
-
-		actualizarBotones();
-
-		frame.requestFocusInWindow();
-		frame.addKeyListener(new KeyAdapter() {
-					
-			@Override
-			public void keyPressed(KeyEvent e) {
-				switch (e.getKeyCode()) {
-//				case KeyEvent.VK_UP -> tablero.moverCelda(Movimiento.ARRIBA);
-//				case KeyEvent.VK_DOWN -> tablero.moverCelda(Movimiento.ABAJO);
-//				case KeyEvent.VK_LEFT -> tablero.moverCelda(Movimiento.IZQUIERDA);
-//				case KeyEvent.VK_RIGHT -> tablero.moverCelda(Movimiento.DERECHA);
-				case KeyEvent.VK_UP -> moverFicha("UP");
-				case KeyEvent.VK_DOWN -> moverFicha("DOWN");
-				case KeyEvent.VK_LEFT -> moverFicha("LEFT");
-				case KeyEvent.VK_RIGHT -> moverFicha("RIGHT");
-				
-
-				}
-			
-			}
-		});
-		bottonsAction();
-		frame.setFocusable(true);
+		return botonAyuda;
 	}
 	
 	private void bottonsAction() {
@@ -340,10 +358,6 @@ public class InterfazGrafica {
 	private void moverFicha(String direccion) {
 		if (juegoConImg != null) {
 			switch (direccion) {
-//			case "UP" -> tablero.moverCelda(Movimiento.ARRIBA);
-//			case "DOWN" -> tablero.moverCelda(Movimiento.ABAJO);
-//			case "LEFT" -> juegoConImg.moverCelda(Movimiento.IZQUIERDA);
-//			case "RIGHT" -> juegoConImg.moverCelda(Movimiento.DERECHA);
             case "UP" -> juegoConImg.moverArriba();
             case "DOWN" -> juegoConImg.moverAbajo();
             case "LEFT" -> juegoConImg.moverIzquierda();
@@ -408,28 +422,46 @@ public class InterfazGrafica {
 				JOptionPane.QUESTION_MESSAGE, null, new Object[] { "Sí", "No" }, "Sí");
 
 		if (n == JOptionPane.YES_OPTION) {
-			// vuelve al menu principal
-			iniciarJuego();
-		
-			frame.setVisible(false);
-			mainFrame.setVisible(true);
+			// vuelve al menu principal y reestablece la clase juego
+			if(juegoConImg != null) {
+				juegoConImg = null;
+				iniciarJuego();
+				
+				frame.setVisible(false);
+				mainFrame.setVisible(true);
+				
+			}else {
+				
+				iniciarJuego();
+			
+				frame.setVisible(false);
+				mainFrame.setVisible(true);
+			}
 		} else {
 			frame.dispose();
 		}
 	}
 	
-	private void volverJuego() {
+	private void volverAlMenu() {
 		int n = JOptionPane.showOptionDialog(frame, "Desea volver al Menu?", "Volver", JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE, null, new Object[] { "Sí", "No" }, "Sí");
 
 		if (n == JOptionPane.YES_OPTION) {
-			// vuelve al menu principal
-			iniciarJuego();
+			// vuelve al menu principal y reestablece la clase juego
+			if(juegoConImg != null) {
+				juegoConImg = null;
+				iniciarJuego();
+				
+				frame.setVisible(false);
+				mainFrame.setVisible(true);
+				
+			}else {
+				
+				iniciarJuego();
 			
-		
-			frame.setVisible(false);
-			mainFrame.setVisible(true);
-			
+				frame.setVisible(false);
+				mainFrame.setVisible(true);
+			}
 		} else {
 			
 			JOptionPane.setRootFrame(frame);

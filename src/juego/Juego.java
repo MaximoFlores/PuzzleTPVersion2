@@ -25,8 +25,6 @@ public class Juego {
 			numeros.add(i);
 		}
 
-//        Collections.shuffle(numeros);
-
 		// Rellenar el tablero con los números mezclados, dejando la última casilla
 		// vacía
 		int index = 0;
@@ -34,7 +32,6 @@ public class Juego {
 			for (int c = 0; c < COL; c++) {
 				if (f == FIL - 1 && c == COL - 1) {
 					tablero[f][c] = 0; // Última casilla vacía
-//                    celdaVacia= new Point(f,c);
 					filaVacia = f;
 					colVacia = c;
 				} else {
@@ -43,7 +40,6 @@ public class Juego {
 			}
 		}
 
-		// Mezclar los números para generar un tablero desordenado
 		mezclar();
 
 		movimientos = 0;
@@ -84,19 +80,36 @@ public class Juego {
 	public int cantidadDeMovRealizados() {
 		return movimientos;
 	}
+	
+	public String nextVerification(int i, int j) {
+        if (i < FIL - 1) {
+            int valor1 = getValor(i + 1, j);
+            if (valor1 == 0) {
+                return "DOWN";
+            }
+        }
+        if (i > 0) {
+            int valor2 = getValor(i - 1, j);
+            if (valor2 == 0) {
+                return "UP";
+            }
+        }
+        if (j < COL - 1) {
+            int valor3 = getValor(i, j + 1);
+            if (valor3 == 0) {
+                return "RIGHT";
+            }
+        }
+        if (j > 0) {
+            int valor4 = getValor(i, j - 1);
+            if (valor4 == 0) {
+                return "LEFT";
+            }
+        }
 
-//	public void moverCelda(Movimiento direccion) {
-//		int nuevaPosCol = celdaVacia.y + direccion.getDireccion().y;
-//		int nuevaPosFil = celdaVacia.x + direccion.getDireccion().x;
-//		if(nuevaPosCol >= 0 && nuevaPosCol < tableroTamanio() && nuevaPosFil >= 0 && nuevaPosFil < tableroTamanio()) {
-//		
-//			int aux = tablero[nuevaPosFil][nuevaPosCol];
-//			tablero[nuevaPosFil][nuevaPosCol] = tablero[celdaVacia.x][celdaVacia.y];
-//			tablero[celdaVacia.x][celdaVacia.y] = aux;
-//			celdaVacia = new Point(nuevaPosFil,nuevaPosCol);
-//			movimientos++;
-//		}
-//	}
+        return "";
+    }
+	
 	public void moverArriba() {
 		if (filaVacia < FIL - 1) {
 			tablero[filaVacia][colVacia] = tablero[filaVacia + 1][colVacia];
@@ -105,9 +118,7 @@ public class Juego {
 			movimientos++;
 		
 		if(orden.size()!=0) {
-			//if(orden.get(orden.size()-1)!=2){
 				orden.add(1);
-			//}
 		}else {
 		orden.add(1);
 		}
@@ -122,9 +133,7 @@ public class Juego {
 			movimientos++;
 		
 		if(orden.size()!=0) {
-			//if(orden.get(orden.size()-1)!=1){
 				orden.add(2);
-			//}
 			}
 		else {
 			orden.add(2);
@@ -141,9 +150,7 @@ public class Juego {
 			movimientos++;
 		
 		if(orden.size()!=0) {
-			//if(orden.get(orden.size()-1)!=3){
 				orden.add(4);
-			//}
 		}else {
 			orden.add(4);
 		}
@@ -160,9 +167,7 @@ public class Juego {
 			movimientos++;
 		
 		if(orden.size()!=0) {
-			//if(orden.get(orden.size()-1)!=4){
 				orden.add(3);
-			//}	
 		}
 		else {
 			orden.add(3);
@@ -208,10 +213,6 @@ public class Juego {
 			movimientos++;
 			System.out.println("izquierda");
 		}
-	}
-
-	private int tableroTamanio() {
-		return tablero.length;
 	}
 
 	public int getValor(int fila, int columna) {
