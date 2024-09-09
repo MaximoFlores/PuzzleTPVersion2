@@ -2,7 +2,6 @@ package juego;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -14,6 +13,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -24,6 +25,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.Cursor;
+import java.awt.EventQueue;
+
 import javax.swing.border.MatteBorder;
 
 public class InterfazGrafica {
@@ -35,6 +38,9 @@ public class InterfazGrafica {
 	private JButton[][] botones;
 	private JLabel cantMov;
 
+	
+	
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> {
 			try {
@@ -45,7 +51,8 @@ public class InterfazGrafica {
 			}
 		});
 	}
-
+	
+	
 	public InterfazGrafica() {
 		iniciarJuego();
 	}
@@ -57,10 +64,12 @@ public class InterfazGrafica {
 	}
 
 	private void crearMainFrame() {
+		
 		mainFrame = new JFrame();
 		mainFrame.setBounds(100, 100, 600, 600);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		mainFrame.setVisible(true);
+		
 		JPanel panel = new JPanel(null);
 		panel.setBackground(Color.white);
 
@@ -74,6 +83,8 @@ public class InterfazGrafica {
 		mainFrame.getContentPane().add(panel);
 		
 		BotonSalir(panel);
+		
+		mainFrame.setVisible(true);
 			
 		
 	}
@@ -140,6 +151,7 @@ public class InterfazGrafica {
 		btnPlayNros.addActionListener(e -> {
 			mainFrame.setVisible(false);
 			frame.setVisible(true);
+			tablero.start = LocalDateTime.now();
 		});
 		panel.add(btnPlayNros);
 	}
@@ -417,6 +429,8 @@ public class InterfazGrafica {
 
 	private void consultaHasGanado() {
 		if ((tablero != null && tablero.partidaGanada()) || (juegoConImg != null && juegoConImg.partidaGanada())) {
+			tablero.end = LocalDateTime.now();
+			//ventanaInfoGanador();
 			mostrarMensajeFinPartida(true);
 			reiniciarJuego();
 		}
@@ -435,7 +449,7 @@ public class InterfazGrafica {
 				}
 			}
 		}
-		cantMov.setText("Movimientos: " + tablero.cantidadDeMovRealizados());
+		//cantMov.setText("Movimientos: " + tablero.cantidadDeMovRealizados());
 	}
 
 	private void actualizarBotonesConImagen() {
@@ -451,7 +465,7 @@ public class InterfazGrafica {
 				botones[i][j].setText("");
 			}
 		}
-		cantMov.setText("Movimientos: " + juegoConImg.cantidadDeMovRealizados());
+		//cantMov.setText("Movimientos: " + juegoConImg.cantidadDeMovRealizados());
 	}
 
 	private void reiniciarJuego() {
@@ -507,10 +521,13 @@ public class InterfazGrafica {
 			frame.setFocusable(true);
 		}
 	}
-
+	
 	private void mostrarMensajeFinPartida(Boolean resultado) {
 		if (resultado) {
-			JOptionPane.showMessageDialog(frame, "¡Ganaste!");
+			int tiempoDeJuego = (int) ChronoUnit.SECONDS.between(tablero.start, tablero.end);
+			JOptionPane.showMessageDialog(frame, "Completaste el rompecabezas en " + tiempoDeJuego + " segundos"
+					+ "\nhaciendo " + tablero.cantidadDeMovRealizados() + " movimientos",  "¡Ganaste!",JOptionPane.PLAIN_MESSAGE);
+			
 		}
 	}
 }

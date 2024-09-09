@@ -2,9 +2,11 @@ package juego;
 
 import java.util.Random;
 import java.awt.Point;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Juego {
+	
 	public static final int FIL = 4;
 	public static final int COL = 4;
 	protected final int[][] tablero;
@@ -13,6 +15,8 @@ public class Juego {
 	private int colVacia;
 	private int movimientos;
 	private ArrayList<Integer> orden;
+	protected LocalDateTime start;
+	protected LocalDateTime end;
 
 	public Juego() {
 		tablero = new int[FIL][COL];
@@ -41,7 +45,6 @@ public class Juego {
 		}
 
 		mezclar();
-
 		movimientos = 0;
 	}
 
@@ -76,10 +79,11 @@ public class Juego {
 		}
 		return true;
 	}
-
+	
 	public int cantidadDeMovRealizados() {
 		return movimientos;
 	}
+	
 	
 	public String nextVerification(int i, int j) {
         if (i < FIL - 1) {
@@ -116,12 +120,12 @@ public class Juego {
 			tablero[filaVacia + 1][colVacia] = 0;
 			filaVacia++;
 			movimientos++;
-		
-		if(orden.size()!=0) {
-				orden.add(1);
-		}else {
-		orden.add(1);
-		}
+			
+			if(orden.size()!=0) {
+					orden.add(1);
+			}else {
+			orden.add(1);
+			}
 		}
 	}
 
@@ -132,12 +136,12 @@ public class Juego {
 			filaVacia--;
 			movimientos++;
 		
-		if(orden.size()!=0) {
+			if(orden.size()!=0) {
+					orden.add(2);
+				}
+			else {
 				orden.add(2);
 			}
-		else {
-			orden.add(2);
-		}
 		
 		}
 	}
@@ -149,11 +153,11 @@ public class Juego {
 			colVacia--;
 			movimientos++;
 		
-		if(orden.size()!=0) {
+			if(orden.size()!=0) {
+					orden.add(4);
+			}else {
 				orden.add(4);
-		}else {
-			orden.add(4);
-		}
+			}
 		}
 		
 	
@@ -168,10 +172,10 @@ public class Juego {
 		
 		if(orden.size()!=0) {
 				orden.add(3);
-		}
-		else {
-			orden.add(3);
-		}
+			}
+			else {
+				orden.add(3);
+			}
 		}
 		
 	}	
@@ -221,17 +225,18 @@ public class Juego {
 	
 	public void getAyuda() {
 		if(orden.size()>=1) {
-		switch (orden.get(orden.size()-1)) {
-		case 1 -> regresarAbajo(); 
-		case 2 -> regresarArriba();
-		case 3 -> regresarDerecha();
-		case 4 -> regresarIzquierda() ;
+			switch (orden.get(orden.size()-1)) {
+			case 1 -> regresarAbajo(); 
+			case 2 -> regresarArriba();
+			case 3 -> regresarDerecha();
+			case 4 -> regresarIzquierda() ;
 		}
 		System.out.println(orden);
 		System.out.println(orden.get(orden.size()-1));
 		orden.remove(orden.size()-1);
-		
-
+		}
 	}
-	}
+	
+	
+	
 }
