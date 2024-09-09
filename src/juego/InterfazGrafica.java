@@ -40,7 +40,7 @@ public class InterfazGrafica {
 
 	
 	
-	
+	/*
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> {
 			try {
@@ -51,7 +51,7 @@ public class InterfazGrafica {
 			}
 		});
 	}
-	
+	*/
 	
 	public InterfazGrafica() {
 		iniciarJuego();
