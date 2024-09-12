@@ -4,34 +4,31 @@ import java.util.Random;
 import java.awt.Point;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 public class Juego {
 	
 	public static final int FIL = 4;
 	public static final int COL = 4;
 	protected final int[][] tablero;
-	protected Point celdaVacia;
 	private int filaVacia;
 	private int colVacia;
 	private int movimientos;
-	private ArrayList<Integer> orden;
+	private LinkedList<Integer> ordenInv;
+	private HashMap<Integer,Move> numOrden;
 	protected LocalDateTime start;
 	protected LocalDateTime end;
 
+	
 	public Juego() {
 		tablero = new int[FIL][COL];
-		ArrayList<Integer> numeros = new ArrayList<>();
-		orden = new ArrayList<>();
-
-
-		// Agregar números del 1 al 15 a la lista
-		for (int i = 1; i <= FIL * COL - 1; i++) {
-			numeros.add(i);
-		}
-
+		ordenInv = new LinkedList<>();
+		declarateNumOrden();
+		
 		// Rellenar el tablero con los números mezclados, dejando la última casilla
 		// vacía
-		int index = 0;
+		int index = 1;
 		for (int f = 0; f < FIL; f++) {
 			for (int c = 0; c < COL; c++) {
 				if (f == FIL - 1 && c == COL - 1) {
@@ -39,32 +36,75 @@ public class Juego {
 					filaVacia = f;
 					colVacia = c;
 				} else {
-					tablero[f][c] = numeros.get(index++);
+					tablero[f][c] = index++;
 				}
 			}
 		}
 
 		mezclar();
+		System.out.println(ordenInv.toString());
+		limpiarOrden();
+		System.out.println();
+		System.out.println(ordenInv.toString());
 		movimientos = 0;
 	}
 
 
 	public void mezclar() {
-		for (int i = 0; i < 200; i++) {
-			Random random = new Random();
-
+		Random random = new Random();		
+		for (int i = 0; i < 30; i++) {			
 			int numAzar = random.nextInt(4) + 1;
 			
-			System.out.println(numAzar);
-			switch (numAzar) {
-			case 1 -> moverArriba();
-			case 2 -> moverAbajo();
-			case 3 -> moverIzquierda();
-			case 4 -> moverDerecha();
+			while(!esPosible(numOrden.get(numAzar))) {
+				numAzar = random.nextInt(4) + 1;				
 			}
-
+			moverCelda(numOrden.get(numAzar), false);
 		}
 	}
+	private boolean esPosible(Move dir) {
+		int ret1 = filaVacia+dir.getDir().x;
+		int ret2 = colVacia+dir.getDir().y;
+		return ret1>=0 && ret1<FIL && ret2>=0 && ret2<COL;
+	}
+	private void limpiarOrden() {
+		
+		while(true) {
+			ArrayList<Integer> posEliminar = new ArrayList<Integer>();
+			for (int i = 0; i < ordenInv.size() - 1; i++) {
+				int actual = ordenInv.get(i);
+				int siguiente = ordenInv.get(i + 1);
+
+				if ((actual == 1 && siguiente == 2) || (actual == 2 && siguiente == 1) ||
+						(actual == 3 && siguiente == 4) || (actual == 4 && siguiente == 3)) {
+					posEliminar.add(i);
+					posEliminar.add(i + 1);
+					i++; 	           
+				}
+
+			}
+			if(posEliminar.size() == 0) {
+				break;
+			}
+			LinkedList<Integer> nuevoOrden = new LinkedList<Integer>();
+			for (int i = 0; i < ordenInv.size(); i++) {
+				if(!posEliminar.contains(i)) {
+					nuevoOrden.add(ordenInv.get(i));
+				}
+			}
+			ordenInv = nuevoOrden;
+		}
+		System.out.println(ordenInv.toString());
+	}
+		
+    private void declarateNumOrden() {
+        
+        numOrden = new HashMap<>();
+        numOrden.put(1,Move.LEFT);
+        numOrden.put(2,Move.RIGHT);
+        numOrden.put(3,Move.UP);
+        numOrden.put(4,Move.DOWN);
+        
+    }
 
 	public boolean partidaGanada() {
 		int valor = 1;
@@ -114,129 +154,43 @@ public class Juego {
         return "";
     }
 	
-	public void moverArriba() {
-		if (filaVacia < FIL - 1) {
-			tablero[filaVacia][colVacia] = tablero[filaVacia + 1][colVacia];
-			tablero[filaVacia + 1][colVacia] = 0;
-			filaVacia++;
-			movimientos++;
-			
-			if(orden.size()!=0) {
-					orden.add(1);
-			}else {
-			orden.add(1);
-			}
-		}
-	}
+    public void moverCelda(Move dir, boolean ayuda){       
+        Point nuevaPos = new Point(filaVacia+dir.getDir().x,colVacia+dir.getDir().y);
+        
+        if(nuevaPos.x>=0 && nuevaPos.x<tablero.length &&
+                nuevaPos.y>=0 && nuevaPos.y<tablero[0].length){       
+      
+        	intercambiarCeldas(filaVacia, colVacia, nuevaPos.x, nuevaPos.y);        
+            filaVacia = nuevaPos.x;
+            colVacia = nuevaPos.y;
+            movimientos++;
+            if(!ayuda){
+                ordenInv.addLast(dir.getNumOrder());
+            }
+            else{
+                ordenInv.removeLast();
+            }
+        }
+    }
 
-	public void moverAbajo() {
-		if (filaVacia > 0) {
-			tablero[filaVacia][colVacia] = tablero[filaVacia - 1][colVacia];
-			tablero[filaVacia - 1][colVacia] = 0;
-			filaVacia--;
-			movimientos++;
-		
-			if(orden.size()!=0) {
-					orden.add(2);
-				}
-			else {
-				orden.add(2);
-			}
-		
-		}
-	}
 
-	public void moverDerecha() {
-		if (colVacia > 0) {
-			tablero[filaVacia][colVacia] = tablero[filaVacia][colVacia - 1];
-			tablero[filaVacia][colVacia - 1] = 0;
-			colVacia--;
-			movimientos++;
-		
-			if(orden.size()!=0) {
-					orden.add(4);
-			}else {
-				orden.add(4);
-			}
-		}
-		
-	
-	}
-
-	public void moverIzquierda() {
-		if (colVacia < COL - 1) {
-			tablero[filaVacia][colVacia] = tablero[filaVacia][colVacia + 1];
-			tablero[filaVacia][colVacia + 1] = 0;
-			colVacia++;
-			movimientos++;
-		
-		if(orden.size()!=0) {
-				orden.add(3);
-			}
-			else {
-				orden.add(3);
-			}
-		}
-		
-	}	
-	public void regresarArriba() {
-		if (filaVacia < FIL - 1) {
-			tablero[filaVacia][colVacia] = tablero[filaVacia + 1][colVacia];
-			tablero[filaVacia + 1][colVacia] = 0;
-			filaVacia++;
-			movimientos++;
-			System.out.println("Arriba");
-		}
-	}
-
-	public void regresarAbajo() {
-		if (filaVacia > 0) {
-			tablero[filaVacia][colVacia] = tablero[filaVacia - 1][colVacia];
-			tablero[filaVacia - 1][colVacia] = 0;
-			filaVacia--;
-			movimientos++;
-			System.out.println("Abajo");
-		}
-	}
-
-	public void regresarDerecha() {
-		if (colVacia > 0) {
-			tablero[filaVacia][colVacia] = tablero[filaVacia][colVacia - 1];
-			tablero[filaVacia][colVacia - 1] = 0;
-			colVacia--;
-			movimientos++;
-			System.out.println("Derecha");
-		}
-	}
-
-	public void regresarIzquierda() {
-		if (colVacia < COL - 1) {
-			tablero[filaVacia][colVacia] = tablero[filaVacia][colVacia + 1];
-			tablero[filaVacia][colVacia + 1] = 0;
-			colVacia++;
-			movimientos++;
-			System.out.println("izquierda");
-		}
-	}
+	private void intercambiarCeldas(int fila1, int col1, int fila2, int col2) {
+    	int aux = tablero[fila1][col1];
+    	tablero[fila1][col1] = tablero[fila2][col2]; 
+    	tablero[fila2][col2] = aux;
+    }
 
 	public int getValor(int fila, int columna) {
 		return tablero[fila][columna];
 	}
 	
+	
 	public void getAyuda() {
-		if(orden.size()>=1) {
-			switch (orden.get(orden.size()-1)) {
-			case 1 -> regresarAbajo(); 
-			case 2 -> regresarArriba();
-			case 3 -> regresarDerecha();
-			case 4 -> regresarIzquierda() ;
+		limpiarOrden();
+		if(ordenInv.size()>=1) {
+			moverCelda(numOrden.get(ordenInv.getLast()), true);				
 		}
-		System.out.println(orden);
-		System.out.println(orden.get(orden.size()-1));
-		orden.remove(orden.size()-1);
-		}
+		
 	}
-	
-	
-	
+		
 }

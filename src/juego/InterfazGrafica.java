@@ -38,21 +38,6 @@ public class InterfazGrafica {
 	private JButton[][] botones;
 	private JLabel cantMov;
 
-	
-	
-	/*
-	public static void main(String[] args) {
-		EventQueue.invokeLater(() -> {
-			try {
-				InterfazGrafica window = new InterfazGrafica();
-				window.mainFrame.setVisible(true);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
-	}
-	*/
-	
 	public InterfazGrafica() {
 		iniciarJuego();
 	}
@@ -149,9 +134,12 @@ public class InterfazGrafica {
 			}
 		});
 		btnPlayNros.addActionListener(e -> {
+			tablero = new Juego();
 			mainFrame.setVisible(false);
 			frame.setVisible(true);
 			tablero.start = LocalDateTime.now();
+			actualizarBotones();
+			
 		});
 		panel.add(btnPlayNros);
 	}
@@ -178,7 +166,7 @@ public class InterfazGrafica {
 			}
 		});
 		btnPlayImg.addActionListener(e -> crearSeleccionImagenesFrame());
-		btnPlayImg.addActionListener(e -> mainFrame.dispose());
+		btnPlayImg.addActionListener(e -> mainFrame.setVisible(false));
 		panel.add(btnPlayImg);
 	}
 
@@ -231,6 +219,8 @@ public class InterfazGrafica {
 			frame.setVisible(true);
 			mainFrame.setVisible(false);
 			actualizarBotonesConImagen();
+			tablero.start = LocalDateTime.now();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -407,19 +397,19 @@ public class InterfazGrafica {
 	private void moverFicha(String direccion) {
 		if (juegoConImg != null) {
 			switch (direccion) {
-            case "UP" -> juegoConImg.moverArriba();
-            case "DOWN" -> juegoConImg.moverAbajo();
-            case "LEFT" -> juegoConImg.moverIzquierda();
-            case "RIGHT" -> juegoConImg.moverDerecha();
+            case "UP" -> juegoConImg.moverCelda(Move.UP,false);
+            case "DOWN" -> juegoConImg.moverCelda(Move.DOWN,false);
+            case "LEFT" -> juegoConImg.moverCelda(Move.LEFT,false);
+            case "RIGHT" -> juegoConImg.moverCelda(Move.RIGHT,false);
 			}
 			
 			actualizarBotonesConImagen();
 		} else {
 			switch (direccion) {
-			case "UP" -> tablero.moverArriba();
-			case "DOWN" -> tablero.moverAbajo();
-			case "LEFT" -> tablero.moverIzquierda();
-			case "RIGHT" -> tablero.moverDerecha();
+			case "UP" -> tablero.moverCelda(Move.UP,false);
+			case "DOWN" -> tablero.moverCelda(Move.DOWN,false);
+			case "LEFT" -> tablero.moverCelda(Move.LEFT,false);
+			case "RIGHT" -> tablero.moverCelda(Move.RIGHT,false);
 			}
 			actualizarBotones();
 		}
@@ -430,6 +420,8 @@ public class InterfazGrafica {
 	private void consultaHasGanado() {
 		if ((tablero != null && tablero.partidaGanada()) || (juegoConImg != null && juegoConImg.partidaGanada())) {
 			tablero.end = LocalDateTime.now();
+			//tablero = new juego() <--cuando corres el programa se inicia.
+			//
 			//ventanaInfoGanador();
 			mostrarMensajeFinPartida(true);
 			reiniciarJuego();
@@ -449,7 +441,7 @@ public class InterfazGrafica {
 				}
 			}
 		}
-		//cantMov.setText("Movimientos: " + tablero.cantidadDeMovRealizados());
+		cantMov.setText("Movimientos: " + tablero.cantidadDeMovRealizados());
 	}
 
 	private void actualizarBotonesConImagen() {
@@ -465,7 +457,7 @@ public class InterfazGrafica {
 				botones[i][j].setText("");
 			}
 		}
-		//cantMov.setText("Movimientos: " + juegoConImg.cantidadDeMovRealizados());
+		cantMov.setText("Movimientos: " + juegoConImg.cantidadDeMovRealizados());
 	}
 
 	private void reiniciarJuego() {
@@ -476,15 +468,19 @@ public class InterfazGrafica {
 			// vuelve al menu principal y reestablece la clase juego
 			if(juegoConImg != null) {
 				juegoConImg = null;
-				frame.dispose();
-				iniciarJuego();
+				
+				//frame.dispose();
+				//iniciarJuego();
 				frame.setVisible(false);
 				mainFrame.setVisible(true);
 				
-			}else {
+			}else {//HAY UN ERROR CON EL TIEMPO - GENERA UN PROBLEMA DE QUE TIEMPO ESTA NULL, 
+					//PARA VER EL ERROR INICIA EL JUEGO DE NUMEROS -> RESOLVELO CON EL BOTON AYUDA 
+					// DALE A REINICIAR QUE TE LLEVA AL MENU DEL JUEGO -> LUEGO ENTRA EN JUEGO CON IMAGEN
+					// Y AL ENTRAR APARECE "Cannot assign field "end" because "this.tablero" is null"
 				
-				iniciarJuego();
-			
+				//iniciarJuego();
+				tablero = null;
 				frame.setVisible(false);
 				mainFrame.setVisible(true);
 			}
@@ -501,7 +497,6 @@ public class InterfazGrafica {
 			// vuelve al menu principal y reestablece la clase juego
 			if(juegoConImg != null) {
 				juegoConImg = null;
-				iniciarJuego();
 				frame.setVisible(false);
 				mainFrame.setVisible(true);
 				
@@ -523,11 +518,15 @@ public class InterfazGrafica {
 	}
 	
 	private void mostrarMensajeFinPartida(Boolean resultado) {
+		int cantMovimientosR = tablero.cantidadDeMovRealizados();
+		if(juegoConImg !=null) {
+			cantMovimientosR = juegoConImg.cantidadDeMovRealizados();
+		}
 		if (resultado) {
 			int tiempoDeJuego = (int) ChronoUnit.SECONDS.between(tablero.start, tablero.end);
 			JOptionPane.showMessageDialog(frame, "Completaste el rompecabezas en " + tiempoDeJuego + " segundos"
-					+ "\nhaciendo " + tablero.cantidadDeMovRealizados() + " movimientos",  "¡Ganaste!",JOptionPane.PLAIN_MESSAGE);
-			
+					+ "\nhaciendo " + cantMovimientosR + " movimientos",  "¡Ganaste!",JOptionPane.PLAIN_MESSAGE);	
 		}
+		
 	}
 }
