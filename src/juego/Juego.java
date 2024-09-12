@@ -52,7 +52,7 @@ public class Juego {
 
 	public void mezclar() {
 		Random random = new Random();		
-		for (int i = 0; i < 30; i++) {			
+		for (int i = 0; i < 25; i++) {			
 			int numAzar = random.nextInt(4) + 1;
 			
 			while(!esPosible(numOrden.get(numAzar))) {
@@ -66,8 +66,7 @@ public class Juego {
 		int ret2 = colVacia+dir.getDir().y;
 		return ret1>=0 && ret1<FIL && ret2>=0 && ret2<COL;
 	}
-	private void limpiarOrden() {
-		
+	private void limpiarOrden() {	
 		while(true) {
 			ArrayList<Integer> posEliminar = new ArrayList<Integer>();
 			for (int i = 0; i < ordenInv.size() - 1; i++) {
@@ -80,8 +79,7 @@ public class Juego {
 					posEliminar.add(i + 1);
 					i++; 	           
 				}
-
-			}
+			}		
 			if(posEliminar.size() == 0) {
 				break;
 			}
@@ -91,6 +89,7 @@ public class Juego {
 					nuevoOrden.add(ordenInv.get(i));
 				}
 			}
+			
 			ordenInv = nuevoOrden;
 		}
 		System.out.println(ordenInv.toString());

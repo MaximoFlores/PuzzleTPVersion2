@@ -219,7 +219,7 @@ public class InterfazGrafica {
 			frame.setVisible(true);
 			mainFrame.setVisible(false);
 			actualizarBotonesConImagen();
-			tablero.start = LocalDateTime.now();
+			juegoConImg.start = LocalDateTime.now();
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -418,15 +418,20 @@ public class InterfazGrafica {
 	}
 
 	private void consultaHasGanado() {
-		if ((tablero != null && tablero.partidaGanada()) || (juegoConImg != null && juegoConImg.partidaGanada())) {
-			tablero.end = LocalDateTime.now();
-			//tablero = new juego() <--cuando corres el programa se inicia.
-			//
-			//ventanaInfoGanador();
+		if ((juegoConImg != null && juegoConImg.partidaGanada())) {
+			juegoConImg.end = LocalDateTime.now();
 			mostrarMensajeFinPartida(true);
 			reiniciarJuego();
 		}
+		if(tablero != null && tablero.partidaGanada()) {
+			tablero.end = LocalDateTime.now();
+			mostrarMensajeFinPartida(true);
+			reiniciarJuego();	
+		}
+	
+		
 	}
+	
 
 	private void actualizarBotones() {
 		for (int i = 0; i < Juego.FIL; i++) {
@@ -518,7 +523,11 @@ public class InterfazGrafica {
 	}
 	
 	private void mostrarMensajeFinPartida(Boolean resultado) {
-		int cantMovimientosR = tablero.cantidadDeMovRealizados();
+		int cantMovimientosR = 0;
+		if (tablero != null) {
+			cantMovimientosR = tablero.cantidadDeMovRealizados();
+		}
+		
 		if(juegoConImg !=null) {
 			cantMovimientosR = juegoConImg.cantidadDeMovRealizados();
 		}

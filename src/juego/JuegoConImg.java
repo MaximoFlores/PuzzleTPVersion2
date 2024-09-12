@@ -53,6 +53,11 @@ public class JuegoConImg extends Juego {
 		}
 
 		// Ahora verifica si la imagen también está en orden
+		return imagenEnOrden();
+		
+	}
+
+	private boolean imagenEnOrden() {
 		for (int f = 0; f < FIL; f++) {
 			for (int c = 0; c < COL; c++) {
 				Image parteImagen = partesImagen[f][c];
@@ -67,7 +72,6 @@ public class JuegoConImg extends Juego {
 				}
 			}
 		}
-		return true;
+		return true;	
 	}
-
 }
