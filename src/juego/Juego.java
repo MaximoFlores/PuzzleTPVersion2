@@ -52,7 +52,7 @@ public class Juego {
 
 	public void mezclar() {
 		Random random = new Random();		
-		for (int i = 0; i < 25; i++) {			
+		for (int i = 0; i < 100; i++) {			
 			int numAzar = random.nextInt(4) + 1;
 			
 			while(!esPosible(numOrden.get(numAzar))) {
