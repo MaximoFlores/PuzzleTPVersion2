@@ -11,6 +11,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
@@ -24,6 +26,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
 import java.awt.Cursor;
 import java.awt.EventQueue;
 
@@ -225,9 +229,39 @@ public class InterfazGraficaMod {
 		}
 	}
 
+	
+	
+	//Crea un boton que, al presionar, abre la imagen completa 
+	//del reompecabezas que se esta armando
+	private JButton botonVerImagenCompleta() {
+		JButton button = new JButton("Referencia");
+		button.setHideActionText(true);
+		button.addActionListener(new ActionListener() {	
+            public void actionPerformed(ActionEvent e){	
+            	if(juegoTablero instanceof JuegoConImg) {
+            		JFrame nuevoFrame = new JFrame();
+                    BufferedImage image = ((JuegoConImg) juegoTablero).getImagenOriginal();
+                    nuevoFrame.setBounds(frame.getWidth()+100, 100, 625, 575);
+                    Image scaledImage = image.getScaledInstance(nuevoFrame.getWidth(), nuevoFrame.getHeight(), Image.SCALE_SMOOTH); 
+                    ImageIcon icon = new ImageIcon(scaledImage);
+                    JLabel label = new JLabel();
+                    label.setIcon(icon);
+                    nuevoFrame.add(label);
+                    nuevoFrame.pack();
+                    nuevoFrame.setVisible(true);
+                    JButton buttonClose = new JButton("Volver");
+                    nuevoFrame.getContentPane().add(buttonClose, BorderLayout.SOUTH);
+                    buttonClose.addActionListener(f -> nuevoFrame.dispose());
+            		}
+            	}
+           });
+		return button;
+	}
+	
+	
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 600, 600);
+		frame.setBounds(100, 100, 800, 650);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JButton botonVolver = botonVolverAlMenu();
@@ -235,6 +269,10 @@ public class InterfazGraficaMod {
 		
 		JButton botonAyuda = botonDeAyuda();
 		frame.getContentPane().add(botonAyuda, BorderLayout.EAST);
+		
+		JButton botonVerImagenCompleta =  botonVerImagenCompleta();
+		frame.getContentPane().add(botonVerImagenCompleta, BorderLayout.WEST );
+		
 		
 		JPanel panel = new JPanel(new GridLayout(Juego.FIL, Juego.COL));
 
@@ -267,7 +305,7 @@ public class InterfazGraficaMod {
 	}
 
 	private void agregarLabelCantidadDeMovimientosAlFrame(JPanel panel) {
-		cantMov = new JLabel("Movimientos: 0");
+		cantMov = new JLabel();
 		frame.getContentPane().add(cantMov, BorderLayout.SOUTH);
 		frame.getContentPane().add(panel);
 	}

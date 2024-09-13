@@ -74,4 +74,12 @@ public class JuegoConImg extends Juego {
 		}
 		return true;	
 	}
+	
+	////////////////////////////////////////////////////
+	
+	public BufferedImage getImagenOriginal() {
+		return imagenOriginal;
+	}
+	
+	
 }

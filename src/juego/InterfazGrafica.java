@@ -43,9 +43,9 @@ public class InterfazGrafica {
 	}
 
 	private void iniciarJuego() {
-		crearMainFrame();
+		//crearMainFrame();
 		this.tablero = new Juego();
-		initialize();
+		//initialize();
 	}
 
 	private void crearMainFrame() {
@@ -227,6 +227,7 @@ public class InterfazGrafica {
 	}
 
 	private void initialize() {
+	
 		frame = new JFrame();
 		frame.setBounds(100, 100, 600, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -235,7 +236,8 @@ public class InterfazGrafica {
 		frame.getContentPane().add(botonVolver, BorderLayout.NORTH);
 		
 		JButton botonAyuda = botonDeAyuda();
-		frame.getContentPane().add(botonAyuda, BorderLayout.EAST);
+		botonAyuda.setBounds(500, 500, 50, 300);
+		
 		
 		JPanel panel = new JPanel(new GridLayout(Juego.FIL, Juego.COL));
 
@@ -248,7 +250,7 @@ public class InterfazGrafica {
 		darAccionALasFlechasDelTeclado();
 		
 		bottonsAction();
-		
+	
 		frame.setFocusable(true);
 	}
 
