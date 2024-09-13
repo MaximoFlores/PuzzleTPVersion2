@@ -254,8 +254,6 @@ public class InterfazGraficaMod {
 	private void darAccionALasFlechasDelTeclado() {
 		frame.requestFocusInWindow();
 		frame.addKeyListener(new KeyAdapter() {
-					
-			@Override
 			public void keyPressed(KeyEvent e) {
 				switch (e.getKeyCode()) {
 				case KeyEvent.VK_UP -> moverFicha("UP");
@@ -303,8 +301,7 @@ public class InterfazGraficaMod {
 
 	private JButton botonDeAyuda() {
 		JButton botonAyuda = new JButton("Ayuda");
-        botonAyuda.addActionListener(new ActionListener() {
-        	     	
+        botonAyuda.addActionListener(new ActionListener() {	
             public void actionPerformed(ActionEvent e){
         		juegoTablero.getAyuda();
             	
@@ -314,6 +311,7 @@ public class InterfazGraficaMod {
             		actualizarBotones();
             	}
             	consultaHasGanado();
+            	frame.requestFocusInWindow();
             	}
             });
 		return botonAyuda;
@@ -325,7 +323,6 @@ public class InterfazGraficaMod {
 				final int x = i;
 				final int y = j;
 		botones[i][j].addActionListener(new ActionListener() {
-			@Override
             public void actionPerformed(ActionEvent e){
             	switch (nextVerification(x,y)){
                 case "UP" -> moverFicha("UP");
@@ -378,7 +375,8 @@ public class InterfazGraficaMod {
 		}
 		else {
 			actualizarBotones();
-			}			
+			}		
+			
 			consultaHasGanado();
 		}
 
@@ -405,6 +403,7 @@ public class InterfazGraficaMod {
 			}
 		}
 		cantMov.setText("Movimientos: " + juegoTablero.cantidadDeMovRealizados());
+		
 	}
 
 	private void actualizarBotonesConImagen() {
@@ -421,6 +420,7 @@ public class InterfazGraficaMod {
 			}
 		}
 		cantMov.setText("Movimientos: " + juegoTablero.cantidadDeMovRealizados());
+		
 	}
 
 	private void reiniciarJuego() {
