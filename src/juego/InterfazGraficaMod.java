@@ -431,6 +431,7 @@ public class InterfazGraficaMod {
 			mainFrame.setVisible(true);
 			frame.setVisible(false);
 			juegoTablero = null;
+			limpiarBotonesTablero();
 		} else {
 			System.exit(0);
 		}
@@ -444,26 +445,20 @@ public class InterfazGraficaMod {
 			mainFrame.setVisible(true);
 			frame.setVisible(false);
 			juegoTablero = null;
-//			// vuelve al menu principal y reestablece la clase juego
-//			if(juegoConImg != null) {
-//				juegoConImg = null;
-//				frame.setVisible(false);
-//				mainFrame.setVisible(true);
-//				
-//			}else {
-//				juegoTablero = new Juego();
-//				bottonsAction();
-//				darAccionALasFlechasDelTeclado();
-//				actualizarBotones();
-//				frame.setFocusable(true);
-//				frame.setVisible(false);
-//				mainFrame.setVisible(true);
-//			}
+			limpiarBotonesTablero();
 		} else {
 			
 			JOptionPane.setRootFrame(frame);
 			frame.requestFocusInWindow();
 			frame.setFocusable(true);
+		}
+	}
+	private void limpiarBotonesTablero() {
+		for (int i = 0; i < botones.length; i++) {
+			for (int j = 0; j < botones.length; j++) {
+				botones[i][j].setIcon(null);
+				botones[i][j].setText("");
+			}
 		}
 	}
 	
