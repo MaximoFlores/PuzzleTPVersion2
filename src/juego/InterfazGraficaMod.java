@@ -37,6 +37,7 @@ public class InterfazGraficaMod {
 	private Juego juegoTablero;
 	private JButton[][] botones;
 	private JLabel cantMov;
+	protected JFrame frameReference;
 
 	public InterfazGraficaMod() {
 		iniciarJuego();
@@ -60,18 +61,12 @@ public class InterfazGraficaMod {
 
 		// Botón con el nombre del juego
 		tituloNombreDelJuego(panel);
-
 		botonParaJugarConNumeros(panel);
-
 		botonParaJugarConImagenes(panel);
-
-		mainFrame.getContentPane().add(panel);
-		
-		BotonSalir(panel);
-		
-		mainFrame.setVisible(true);
-			
-		
+		mainFrame.getContentPane().add(panel);	
+		BotonSalir(panel);	
+		mainFrame.setVisible(true);		
+		mainFrame.setResizable(false);					
 	}
 	
 	private void BotonSalir(JPanel panel) {
@@ -172,6 +167,7 @@ public class InterfazGraficaMod {
 
 	private void crearSeleccionImagenesFrame() {
 		JFrame seleccionImagenesFrame = new JFrame();
+		seleccionImagenesFrame.setResizable(false);
 		seleccionImagenesFrame.setBounds(100, 100, 600, 600);
 		seleccionImagenesFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -231,24 +227,27 @@ public class InterfazGraficaMod {
 	//Crea un boton que, al presionar, abre la imagen completa 
 	//del reompecabezas que se esta armando
 	private JButton botonVerImagenCompleta() {
-		JFrame nuevoFrame = new JFrame();
+		frameReference = new JFrame();
+
+		frameReference.setResizable(false);
 		JButton button = new JButton("Referencia");
 		button.setHideActionText(true);
 		button.addActionListener(new ActionListener() {	
             public void actionPerformed(ActionEvent e){	
-            	if(juegoTablero instanceof JuegoConImg) {           		
+            	if(juegoTablero instanceof JuegoConImg) {   
+            		frameReference.getContentPane().removeAll();
                     BufferedImage image = ((JuegoConImg) juegoTablero).getImagenOriginal();
-                    nuevoFrame.setBounds(frame.getWidth()+100, 100, 625, 575);
-                    Image scaledImage = image.getScaledInstance(nuevoFrame.getWidth(), nuevoFrame.getHeight(), Image.SCALE_SMOOTH); 
+                    frameReference.setBounds(frame.getWidth()+100, 100, 625, 575);
+                    Image scaledImage = image.getScaledInstance(frameReference.getWidth(), frameReference.getHeight(), Image.SCALE_SMOOTH); 
                     ImageIcon icon = new ImageIcon(scaledImage);
                     JLabel label = new JLabel();
                     label.setIcon(icon);
-                    nuevoFrame.add(label);
-                    nuevoFrame.pack();
-                    nuevoFrame.setVisible(true);
+                    frameReference.add(label);
+                    frameReference.pack();
+                    frameReference.setVisible(true);
                     JButton buttonClose = new JButton("Volver");
-                    nuevoFrame.getContentPane().add(buttonClose, BorderLayout.SOUTH);
-                    buttonClose.addActionListener(f -> nuevoFrame.dispose());
+                    frameReference.getContentPane().add(buttonClose, BorderLayout.SOUTH);
+                    buttonClose.addActionListener(f -> frameReference.dispose());
             		}
             	}
            });
@@ -258,6 +257,7 @@ public class InterfazGraficaMod {
 	
 	private void initialize() {
 		frame = new JFrame();
+		frame.setResizable(false);
 		frame.setBounds(100, 100, 800, 650);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -331,9 +331,14 @@ public class InterfazGraficaMod {
 		JButton botonVolver = new JButton("Volver Al Menu");
 		botonVolver.addActionListener(new ActionListener() {
 			
-            public void actionPerformed(ActionEvent e){
+            
+
+			public void actionPerformed(ActionEvent e){
             	volverAlMenu();
             	
+				if(frameReference != null) {
+            		frameReference.dispose();
+            	}
             }
 		});
 		return botonVolver;
