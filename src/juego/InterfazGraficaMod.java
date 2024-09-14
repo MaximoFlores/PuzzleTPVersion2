@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -39,6 +40,7 @@ public class InterfazGraficaMod {
 	private JLabel cantMov;
 	private JFrame frameReference;
 	private JButton botonVerImagenCompleta;
+	
 	public InterfazGraficaMod() {
 		iniciarJuego();
 	}
@@ -55,6 +57,7 @@ public class InterfazGraficaMod {
 		mainFrame.setBounds(100, 100, 600, 600);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.setVisible(true);
+		mainFrame.setIconImage(crearIconoImagen());
 		
 		JPanel panel = new JPanel(null);
 		panel.setBackground(Color.white);
@@ -68,7 +71,7 @@ public class InterfazGraficaMod {
 		mainFrame.setVisible(true);		
 		mainFrame.setResizable(false);					
 	}
-	
+
 	private void BotonSalir(JPanel panel) {
 		JButton btnSalir = new JButton("Salir");
 		btnSalir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -169,6 +172,7 @@ public class InterfazGraficaMod {
 		seleccionImagenesFrame.setResizable(false);
 		seleccionImagenesFrame.setBounds(100, 100, 600, 600);
 		seleccionImagenesFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		seleccionImagenesFrame.setIconImage(crearIconoImagen());
 
 		// Asume que tienes imágenes en las rutas especificadas
 		String[] rutasImagenes = { "/imagenes/1.jpg", "/imagenes/2.jpg", "/imagenes/3.jpg" };
@@ -212,6 +216,7 @@ public class InterfazGraficaMod {
 		try {
 			juegoTablero = new JuegoConImg(rutaImagen);
 			frame.setVisible(true);
+			frame.setIconImage(crearIconoImagen());
 			mainFrame.setVisible(false);
 			actualizarBotonesConImagen();
 			frame.requestFocusInWindow();
@@ -260,6 +265,7 @@ public class InterfazGraficaMod {
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 800, 650);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setIconImage(crearIconoImagen());
 		
 		JButton botonVolver = botonVolverAlMenu();
 		frame.getContentPane().add(botonVolver, BorderLayout.NORTH);
@@ -515,5 +521,11 @@ public class InterfazGraficaMod {
 					+ "\nhaciendo " + juegoTablero.cantidadDeMovRealizados() + " movimientos",  "¡Ganaste!",JOptionPane.PLAIN_MESSAGE);	
 		}
 		
+	}
+	
+	private Image crearIconoImagen() {
+		return Toolkit.getDefaultToolkit().getImage(
+				InterfazGraficaMod.class.getResource("/imagenes/iconoPuzzle.png")
+		);
 	}
 }
