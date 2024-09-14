@@ -142,7 +142,7 @@ public class InterfazGraficaMod {
 			frame.setVisible(true);
 			juegoTablero.start = LocalDateTime.now();
 			actualizarBotones();
-			
+			frame.requestFocusInWindow();
 		});
 		panel.add(btnPlayNros);
 	}
@@ -223,7 +223,7 @@ public class InterfazGraficaMod {
 			mainFrame.setVisible(false);
 			actualizarBotonesConImagen();
 			juegoTablero.start = LocalDateTime.now();
-			
+			frame.requestFocusInWindow();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
