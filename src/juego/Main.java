@@ -4,6 +4,6 @@ public class Main {
 
 	public static void main(String[] args) {
 //		InterfazGrafica puzzle = new InterfazGrafica();
-		InterfazGraficaMod puzzle = new InterfazGraficaMod();
+		new InterfazGraficaMod();
 	}
 }

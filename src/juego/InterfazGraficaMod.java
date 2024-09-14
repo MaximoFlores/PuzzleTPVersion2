@@ -40,6 +40,7 @@ public class InterfazGraficaMod {
 	private Juego juegoTablero;
 	private JButton[][] botones;
 	private JLabel cantMov;
+	private boolean isFrameActive;
 
 	public InterfazGraficaMod() {
 		iniciarJuego();
@@ -234,12 +235,12 @@ public class InterfazGraficaMod {
 	//Crea un boton que, al presionar, abre la imagen completa 
 	//del reompecabezas que se esta armando
 	private JButton botonVerImagenCompleta() {
+		JFrame nuevoFrame = new JFrame();
 		JButton button = new JButton("Referencia");
 		button.setHideActionText(true);
 		button.addActionListener(new ActionListener() {	
             public void actionPerformed(ActionEvent e){	
-            	if(juegoTablero instanceof JuegoConImg) {
-            		JFrame nuevoFrame = new JFrame();
+            	if(juegoTablero instanceof JuegoConImg) {           		
                     BufferedImage image = ((JuegoConImg) juegoTablero).getImagenOriginal();
                     nuevoFrame.setBounds(frame.getWidth()+100, 100, 625, 575);
                     Image scaledImage = image.getScaledInstance(nuevoFrame.getWidth(), nuevoFrame.getHeight(), Image.SCALE_SMOOTH); 
