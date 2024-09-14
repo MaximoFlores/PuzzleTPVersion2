@@ -3,6 +3,7 @@ package juego;
 import java.util.Random;
 import java.awt.Point;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -17,15 +18,14 @@ public class Juego {
 	private int movimientos;
 	private LinkedList<Integer> ordenInv;
 	private HashMap<Integer,Move> numOrden;
-	protected LocalDateTime start;
-	protected LocalDateTime end;
+	private LocalDateTime start;
+	private LocalDateTime end;
 
 	
 	public Juego() {
 		tablero = new int[FIL][COL];
 		ordenInv = new LinkedList<>();
 		declarateNumOrden();
-		
 		// Rellenar el tablero con los números mezclados, dejando la última casilla
 		// vacía
 		int index = 1;
@@ -42,9 +42,9 @@ public class Juego {
 		}
 
 		mezclar();
-		
 		limpiarOrden();
 		
+		this.start = LocalDateTime.now();
 		movimientos = 0;
 	}
 
@@ -157,7 +157,14 @@ public class Juego {
 		if(ordenInv.size()>=1) {
 			moverCelda(numOrden.get(ordenInv.getLast()), true);				
 		}
-		
 	}
-		
+	
+	public void finalizarTiempoDeJuego() {
+		this.end = LocalDateTime.now();
+	}
+	
+	public int calcularTiempoDeJuego() {
+		return (int) ChronoUnit.SECONDS.between(this.start, this.end);
+	}
+	
 }

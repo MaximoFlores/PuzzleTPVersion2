@@ -132,7 +132,6 @@ public class InterfazGraficaMod {
 			juegoTablero = new Juego();
 			mainFrame.setVisible(false);
 			frame.setVisible(true);
-			juegoTablero.start = LocalDateTime.now();
 			actualizarBotones();
 			frame.requestFocusInWindow();
 		});
@@ -215,7 +214,6 @@ public class InterfazGraficaMod {
 			frame.setVisible(true);
 			mainFrame.setVisible(false);
 			actualizarBotonesConImagen();
-			juegoTablero.start = LocalDateTime.now();
 			frame.requestFocusInWindow();
 			botonVerImagenCompleta =  botonVerImagenCompleta();
 			frame.getContentPane().add(botonVerImagenCompleta, BorderLayout.WEST );
@@ -422,7 +420,7 @@ public class InterfazGraficaMod {
 
 	private void consultaHasGanado() {
 		if(juegoTablero.partidaGanada()) {
-			juegoTablero.end = LocalDateTime.now();
+			juegoTablero.finalizarTiempoDeJuego();
 			mostrarMensajeFinPartida(true);
 			reiniciarJuego();		
 			}
@@ -513,8 +511,7 @@ public class InterfazGraficaMod {
 	
 	private void mostrarMensajeFinPartida(Boolean resultado) {
 		if (resultado) {
-			int tiempoDeJuego = (int) ChronoUnit.SECONDS.between(juegoTablero.start, juegoTablero.end);
-			JOptionPane.showMessageDialog(frame, "Completaste el rompecabezas en " + tiempoDeJuego + " segundos"
+			JOptionPane.showMessageDialog(frame, "Completaste el rompecabezas en " + juegoTablero.calcularTiempoDeJuego() + " segundos"
 					+ "\nhaciendo " + juegoTablero.cantidadDeMovRealizados() + " movimientos",  "¡Ganaste!",JOptionPane.PLAIN_MESSAGE);	
 		}
 		
