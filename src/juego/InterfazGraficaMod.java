@@ -12,7 +12,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
@@ -26,10 +25,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 
 import java.awt.Cursor;
-import java.awt.EventQueue;
 
 import javax.swing.border.MatteBorder;
 
@@ -40,7 +37,6 @@ public class InterfazGraficaMod {
 	private Juego juegoTablero;
 	private JButton[][] botones;
 	private JLabel cantMov;
-	private boolean isFrameActive;
 
 	public InterfazGraficaMod() {
 		iniciarJuego();
@@ -271,10 +267,6 @@ public class InterfazGraficaMod {
 		JButton botonAyuda = botonDeAyuda();
 		frame.getContentPane().add(botonAyuda, BorderLayout.EAST);
 		
-		JButton botonVerImagenCompleta =  botonVerImagenCompleta();
-		frame.getContentPane().add(botonVerImagenCompleta, BorderLayout.WEST );
-		
-		
 		JPanel panel = new JPanel(new GridLayout(Juego.FIL, Juego.COL));
 
 		crearBotonesEnPanel(panel);
@@ -286,6 +278,9 @@ public class InterfazGraficaMod {
 		darAccionALasFlechasDelTeclado();
 		
 		bottonsAction();
+		
+		JButton botonVerImagenCompleta =  botonVerImagenCompleta();
+		frame.getContentPane().add(botonVerImagenCompleta, BorderLayout.WEST );
 		
 		frame.setFocusable(true);
 	}
