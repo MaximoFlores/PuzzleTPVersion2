@@ -37,8 +37,8 @@ public class InterfazGraficaMod {
 	private Juego juegoTablero;
 	private JButton[][] botones;
 	private JLabel cantMov;
-	protected JFrame frameReference;
-
+	private JFrame frameReference;
+	private JButton botonVerImagenCompleta;
 	public InterfazGraficaMod() {
 		iniciarJuego();
 	}
@@ -217,6 +217,9 @@ public class InterfazGraficaMod {
 			actualizarBotonesConImagen();
 			juegoTablero.start = LocalDateTime.now();
 			frame.requestFocusInWindow();
+			botonVerImagenCompleta =  botonVerImagenCompleta();
+			frame.getContentPane().add(botonVerImagenCompleta, BorderLayout.WEST );
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -228,7 +231,6 @@ public class InterfazGraficaMod {
 	//del reompecabezas que se esta armando
 	private JButton botonVerImagenCompleta() {
 		frameReference = new JFrame();
-
 		frameReference.setResizable(false);
 		JButton button = new JButton("Referencia");
 		button.setHideActionText(true);
@@ -279,9 +281,6 @@ public class InterfazGraficaMod {
 		
 		bottonsAction();
 		
-		JButton botonVerImagenCompleta =  botonVerImagenCompleta();
-		frame.getContentPane().add(botonVerImagenCompleta, BorderLayout.WEST );
-		
 		frame.setFocusable(true);
 	}
 	
@@ -317,8 +316,7 @@ public class InterfazGraficaMod {
 		for (int i = 0; i < Juego.FIL; i++) {
 			for (int j = 0; j < Juego.COL; j++) {
 				botones[i][j] = new JButton();
-				botones[i][j].setFont(new Font("Clear Sans", Font.ITALIC, 50));
-				
+				botones[i][j].setFont(new Font("Clear Sans", Font.ITALIC, 50));				
 				botones[i][j].setForeground(Color.black);
 				botones[i][j].setOpaque(true);
 				botones[i][j].setFocusable(false);
@@ -330,9 +328,6 @@ public class InterfazGraficaMod {
 	private JButton botonVolverAlMenu() {
 		JButton botonVolver = new JButton("Volver Al Menu");
 		botonVolver.addActionListener(new ActionListener() {
-			
-            
-
 			public void actionPerformed(ActionEvent e){
             	volverAlMenu();
             	
@@ -475,10 +470,17 @@ public class InterfazGraficaMod {
 		if (n == JOptionPane.YES_OPTION) {
 			mainFrame.setVisible(true);
 			frame.setVisible(false);
+			eliminarBotonImagenCompleta();
 			juegoTablero = null;
 			limpiarBotonesTablero();
 		} else {
 			System.exit(0);
+		}
+	}
+
+	private void eliminarBotonImagenCompleta() {
+		if (juegoTablero instanceof JuegoConImg) {
+			frame.remove(botonVerImagenCompleta);
 		}
 	}
 	
@@ -489,8 +491,10 @@ public class InterfazGraficaMod {
 		if (n == JOptionPane.YES_OPTION) {
 			mainFrame.setVisible(true);
 			frame.setVisible(false);
+			eliminarBotonImagenCompleta();
 			juegoTablero = null;
 			limpiarBotonesTablero();
+			
 		} else {
 			
 			JOptionPane.setRootFrame(frame);
