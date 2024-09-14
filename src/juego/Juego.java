@@ -91,7 +91,6 @@ public class Juego {
 			
 			ordenInv = nuevoOrden;
 		}
-		System.out.println(ordenInv.toString());
 	}
 		
     private void declarateNumOrden() {
