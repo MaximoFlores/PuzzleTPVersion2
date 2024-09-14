@@ -42,10 +42,9 @@ public class Juego {
 		}
 
 		mezclar();
-		System.out.println(ordenInv.toString());
+		
 		limpiarOrden();
-		System.out.println();
-		System.out.println(ordenInv.toString());
+		
 		movimientos = 0;
 	}
 
@@ -122,36 +121,6 @@ public class Juego {
 	public int cantidadDeMovRealizados() {
 		return movimientos;
 	}
-	
-	
-	public String nextVerification(int i, int j) {
-        if (i < FIL - 1) {
-            int valor1 = getValor(i + 1, j);
-            if (valor1 == 0) {
-                return "DOWN";
-            }
-        }
-        if (i > 0) {
-            int valor2 = getValor(i - 1, j);
-            if (valor2 == 0) {
-                return "UP";
-            }
-        }
-        if (j < COL - 1) {
-            int valor3 = getValor(i, j + 1);
-            if (valor3 == 0) {
-                return "RIGHT";
-            }
-        }
-        if (j > 0) {
-            int valor4 = getValor(i, j - 1);
-            if (valor4 == 0) {
-                return "LEFT";
-            }
-        }
-
-        return "";
-    }
 	
     public void moverCelda(Move dir, boolean ayuda){       
         Point nuevaPos = new Point(filaVacia+dir.getDir().x,colVacia+dir.getDir().y);

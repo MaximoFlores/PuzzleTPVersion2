@@ -289,18 +289,24 @@ public class InterfazGraficaMod {
 		
 		frame.setFocusable(true);
 	}
+	
+	public enum Direction {
+	    UP,
+	    DOWN,
+	    LEFT,
+	    RIGHT;
+	}
 
 	private void darAccionALasFlechasDelTeclado() {
 		frame.requestFocusInWindow();
 		frame.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				switch (e.getKeyCode()) {
-				case KeyEvent.VK_UP -> moverFicha("UP");
-				case KeyEvent.VK_DOWN -> moverFicha("DOWN");
-				case KeyEvent.VK_LEFT -> moverFicha("LEFT");
-				case KeyEvent.VK_RIGHT -> moverFicha("RIGHT");
-				
-				}	
+			    case KeyEvent.VK_UP -> moverFicha(Direction.UP);
+			    case KeyEvent.VK_DOWN -> moverFicha(Direction.DOWN);
+			    case KeyEvent.VK_LEFT -> moverFicha(Direction.LEFT);
+			    case KeyEvent.VK_RIGHT -> moverFicha(Direction.RIGHT);
+			}
 			}
 		});
 	}
@@ -363,12 +369,10 @@ public class InterfazGraficaMod {
 				final int y = j;
 		botones[i][j].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-            	switch (nextVerification(x,y)){
-                case "UP" -> moverFicha("UP");
-                case "DOWN" -> moverFicha("DOWN");
-                case "LEFT" -> moverFicha("LEFT");
-                case "RIGHT" -> moverFicha("RIGHT");
-            }
+            	Direction direction = nextVerification(x, y);
+            	if (direction != null) {
+            	    moverFicha(direction);
+            	}
             }
 
 			
@@ -377,47 +381,49 @@ public class InterfazGraficaMod {
 		}
 	}
 	
-	private String nextVerification(int i, int j)  {
-		 if(i<3){
-             int valor1 = juegoTablero.getValor(i+1, j);
-             if (valor1 == 0){
-                 return "DOWN";
-         }    }
-         if(i>0){
-             int valor2 = juegoTablero.getValor(i-1, j);
-             if (valor2 == 0){
-                 return "UP";
-         }    }
-         if(j<3){
-             int valor3 = juegoTablero.getValor(i, j+1);
-             if (valor3 == 0){
-                 return "RIGHT";
-         }    }
-         if(j>0){
-             int valor4 = juegoTablero.getValor(i, j-1);
-             if (valor4 == 0){
-                 return "LEFT";
-                 }
-             }
-     return "";
+	private Direction nextVerification(int i, int j) {
+	    if(i < 3) {
+	        int valor1 = juegoTablero.getValor(i+1, j);
+	        if (valor1 == 0) {
+	            return Direction.DOWN;
+	        }
+	    }
+	    if(i > 0) {
+	        int valor2 = juegoTablero.getValor(i-1, j);
+	        if (valor2 == 0) {
+	            return Direction.UP;
+	        }
+	    }
+	    if(j < 3) {
+	        int valor3 = juegoTablero.getValor(i, j+1);
+	        if (valor3 == 0) {
+	            return Direction.RIGHT;
+	        }
+	    }
+	    if(j > 0) {
+	        int valor4 = juegoTablero.getValor(i, j-1);
+	        if (valor4 == 0) {
+	            return Direction.LEFT;
+	        }
+	    }
+	    return null; // O un valor por defecto si prefieres
 	}
 
-	private void moverFicha(String direccion) {
-		switch (direccion) {
-		case "UP" -> juegoTablero.moverCelda(Move.UP,false);
-		case "DOWN" -> juegoTablero.moverCelda(Move.DOWN,false);
-		case "LEFT" -> juegoTablero.moverCelda(Move.LEFT,false);
-		case "RIGHT" -> juegoTablero.moverCelda(Move.RIGHT,false);
-		}
-		if(juegoTablero instanceof JuegoConImg) {
-			actualizarBotonesConImagen();
-		}
-		else {
-			actualizarBotones();
-			}		
-			
-			consultaHasGanado();
-		}
+	private void moverFicha(Direction direccion) {
+	    switch (direccion) {
+	        case UP -> juegoTablero.moverCelda(Move.UP, false);
+	        case DOWN -> juegoTablero.moverCelda(Move.DOWN, false);
+	        case LEFT -> juegoTablero.moverCelda(Move.LEFT, false);
+	        case RIGHT -> juegoTablero.moverCelda(Move.RIGHT, false);
+	    }
+
+	    if(juegoTablero instanceof JuegoConImg) {
+	        actualizarBotonesConImagen();
+	    } else {
+	        actualizarBotones();
+	    }
+	    consultaHasGanado();
+	}
 
 	private void consultaHasGanado() {
 		if(juegoTablero.partidaGanada()) {
