@@ -278,7 +278,7 @@ public class InterfazGrafica {
 
 		darAccionALasFlechasDelTeclado();
 		
-		bottonsAction();
+		accionDeBotonesPanel();
 		
 		frame.setFocusable(true);
 	}
@@ -356,14 +356,14 @@ public class InterfazGrafica {
 		return botonAyuda;
 	}
 	
-	private void bottonsAction() {
+	private void accionDeBotonesPanel() {
 		for (int i = 0; i < Juego.FIL; i++) {
 			for (int j = 0; j < Juego.COL; j++) {
 				final int x = i;
 				final int y = j;
 		botones[i][j].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-            	Direction direction = nextVerification(x, y);
+            	Direction direction = verificarVecino(x, y);
             	if (direction != null) {
             	    moverFicha(direction);
             	}
@@ -373,7 +373,7 @@ public class InterfazGrafica {
 		}
 	}
 	
-	private Direction nextVerification(int i, int j) {
+	private Direction verificarVecino(int i, int j) {
 	    if(i < 3) {
 	        int valor1 = juegoTablero.getValor(i+1, j);
 	        if (valor1 == 0) {
