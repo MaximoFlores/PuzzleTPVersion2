@@ -35,7 +35,6 @@ public class JuegoConImg extends Juego {
 		}
 	}
 
-
 	public Image getParteImagen(int fila, int columna) {
 		int valor = getValor(fila, columna);
 		if (valor == 0) {
@@ -74,12 +73,9 @@ public class JuegoConImg extends Juego {
 		}
 		return true;	
 	}
-	
-	////////////////////////////////////////////////////
-	
+
 	public BufferedImage getImagenOriginal() {
 		return imagenOriginal;
 	}
-	
 	
 }

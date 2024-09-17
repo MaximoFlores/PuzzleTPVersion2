@@ -225,8 +225,6 @@ public class InterfazGrafica {
 		}
 	}
 
-	
-	
 	//Crea un boton que, al presionar, abre la imagen completa 
 	//del reompecabezas que se esta armando
 	private JButton botonVerImagenCompleta() {
@@ -297,11 +295,11 @@ public class InterfazGrafica {
 		frame.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				switch (e.getKeyCode()) {
-			    case KeyEvent.VK_UP -> moverFicha(Direction.UP);
-			    case KeyEvent.VK_DOWN -> moverFicha(Direction.DOWN);
-			    case KeyEvent.VK_LEFT -> moverFicha(Direction.LEFT);
-			    case KeyEvent.VK_RIGHT -> moverFicha(Direction.RIGHT);
-			}
+					case KeyEvent.VK_UP -> moverFicha(Direction.UP);
+					case KeyEvent.VK_DOWN -> moverFicha(Direction.DOWN);
+					case KeyEvent.VK_LEFT -> moverFicha(Direction.LEFT);
+					case KeyEvent.VK_RIGHT -> moverFicha(Direction.RIGHT);
+				}
 			}
 		});
 	}
@@ -370,8 +368,6 @@ public class InterfazGrafica {
             	    moverFicha(direction);
             	}
             }
-
-			
         });
 			}
 		}
@@ -412,7 +408,6 @@ public class InterfazGrafica {
 	        case LEFT -> juegoTablero.moverCelda(Move.LEFT, false);
 	        case RIGHT -> juegoTablero.moverCelda(Move.RIGHT, false);
 	    }
-
 	    if(juegoTablero instanceof JuegoConImg) {
 	        actualizarBotonesConImagen();
 	    } else {
@@ -444,7 +439,6 @@ public class InterfazGrafica {
 			}
 		}
 		cantMov.setText("Movimientos: " + juegoTablero.cantidadDeMovRealizados());
-		
 	}
 
 	private void actualizarBotonesConImagen() {
@@ -460,8 +454,7 @@ public class InterfazGrafica {
 				botones[i][j].setText("");
 			}
 		}
-		cantMov.setText("Movimientos: " + juegoTablero.cantidadDeMovRealizados());
-		
+		cantMov.setText("Movimientos: " + juegoTablero.cantidadDeMovRealizados());	
 	}
 
 	private void reiniciarJuego() {

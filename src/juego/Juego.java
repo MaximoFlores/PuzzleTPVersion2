@@ -48,7 +48,6 @@ public class Juego {
 		movimientos = 0;
 	}
 
-
 	public void mezclar() {
 		Random random = new Random();		
 		for (int i = 0; i < 100; i++) {			
@@ -60,11 +59,13 @@ public class Juego {
 			moverCelda(numOrden.get(numAzar), false);
 		}
 	}
+	
 	private boolean esPosible(Move dir) {
 		int ret1 = filaVacia+dir.getDir().x;
 		int ret2 = colVacia+dir.getDir().y;
 		return ret1>=0 && ret1<FIL && ret2>=0 && ret2<COL;
 	}
+	
 	private void limpiarOrden() {	
 		while(true) {
 			ArrayList<Integer> posEliminar = new ArrayList<Integer>();
@@ -88,7 +89,6 @@ public class Juego {
 					nuevoOrden.add(ordenInv.get(i));
 				}
 			}
-			
 			ordenInv = nuevoOrden;
 		}
 	}
@@ -100,7 +100,6 @@ public class Juego {
         numOrden.put(2,Move.RIGHT);
         numOrden.put(3,Move.UP);
         numOrden.put(4,Move.DOWN);
-        
     }
 
 	public boolean partidaGanada() {
@@ -140,7 +139,6 @@ public class Juego {
         }
     }
 
-
 	private void intercambiarCeldas(int fila1, int col1, int fila2, int col2) {
     	int aux = tablero[fila1][col1];
     	tablero[fila1][col1] = tablero[fila2][col2]; 
@@ -150,7 +148,6 @@ public class Juego {
 	public int getValor(int fila, int columna) {
 		return tablero[fila][columna];
 	}
-	
 	
 	public void getAyuda() {
 		limpiarOrden();

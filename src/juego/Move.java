@@ -15,12 +15,15 @@ public enum Move {
         this.punto = punto;
         this.numOrder = numOrder;
     }
+    
     public Point getDir() {
 	return punto;
     }
+    
     public int getNumOrder(){
         return this.numOrder;
     }
+    
 }
 	
 
